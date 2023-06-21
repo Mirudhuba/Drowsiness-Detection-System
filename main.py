@@ -80,21 +80,10 @@ def checkEyeStatus(landmarks):
         hullRightEye.append((landmarks[rightEyeIndex[i]][0], landmarks[rightEyeIndex[i]][1]))
 
     cv2.fillConvexPoly(mask, np.int32(hullRightEye), 255)
-
-    # lenLeftEyeX = landmarks[leftEyeIndex[3]][0] - landmarks[leftEyeIndex[0]][0]
-    # lenLeftEyeY = landmarks[leftEyeIndex[3]][1] - landmarks[leftEyeIndex[0]][1]
-
-    # lenLeftEyeSquared = (lenLeftEyeX ** 2) + (lenLeftEyeY ** 2)
-    # eyeRegionCount = cv2.countNonZero(mask)
-
-    # normalizedCount = eyeRegionCount/np.float32(lenLeftEyeSquared)
-
-    #############################################################################
     leftEAR = eye_aspect_ratio(hullLeftEye)
     rightEAR = eye_aspect_ratio(hullRightEye)
-
     ear = (leftEAR + rightEAR) / 2.0
-    #############################################################################
+
 
     eyeStatus = 1  # 1 -> Open, 0 -> closed
     if (ear < thresh):
@@ -190,11 +179,6 @@ while (validFrames < dummyFrames):
 
     else:
         totalTime += timeLandmarks
-        # cv2.putText(frame, "Caliberation in Progress", (200, 30), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
-        # cv2.imshow("Blink Detection Demo", frame)
-
-    # if cv2.waitKey(1) & 0xFF == 27:
-    #         sys.exit()
 
 print("Caliberation Complete!")
 
@@ -225,10 +209,6 @@ if __name__ == "__main__":
             landmarks = getLandmarks(adjusted)
             if landmarks == 0:
                 validFrames -= 1
-                #cv2.putText(frame, "Unable to detect face, Please check proper lighting", (10, 30),
-                            #cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
-                #cv2.putText(frame, "or decrease FACE_DOWNSAMPLE_RATIO", (10, 50), cv2.FONT_HERSHEY_COMPLEX, 0.5,
-                            #(0, 0, 255), 1, cv2.LINE_AA)
                 cv2.imshow("Blink Detection Demo", frame)
                 if cv2.waitKey(1) & 0xFF == 27:
                     break
@@ -258,7 +238,6 @@ if __name__ == "__main__":
             else:
                 cv2.putText(frame, "Blinks : {}".format(blinkCount), (460, 80), cv2.FONT_HERSHEY_COMPLEX, 0.8,
                             (0, 0, 255), 2, cv2.LINE_AA)
-                # (0, 400)
                 ALARM_ON = False
 
             cv2.imshow("Blink Detection Demo", frame)
@@ -273,8 +252,6 @@ if __name__ == "__main__":
 
             elif k == 27:
                 break
-
-            # print("Time taken", time.time() - t)
 
         except Exception as e:
             print(e)
